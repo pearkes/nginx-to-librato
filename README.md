@@ -3,24 +3,24 @@
 This is a small application that polls the [HttpStubStatusModule](http://wiki.nginx.org/HttpStubStatusModule)
 in nginx, then formats and publishes the resulting data to Librato.
 
-## Why?
-
-I didn't need collectd, which librato integrates with. This is easy
-to deploy and just generally makes more sense to me.
-
 ## Usage
 
     nginx-to-librato -c /etc/nginx-to-librato.conf
 
 ## Configuration
 
-[settings]
-token: your_librato_token
-user: your_librato_email
-source: load-balancer-001
-url: 127.0.0.1:8000/nginx_status
-flush_interval: 10s
+    [settings]
+    token: your_librato_token
+    user: your_librato_email
+    source: load-balancer-001
+    url: 127.0.0.1:8000/nginx_status
+    flush_interval: 10s
 
+
+## Why?
+
+I didn't need collectd, which librato integrates with. This is easy
+to deploy and just generally makes more sense to me.
 
 ## Upstart Example
 
