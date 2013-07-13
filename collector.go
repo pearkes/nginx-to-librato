@@ -9,11 +9,6 @@ import (
 	"strconv"
 )
 
-const examplePage = `Active connections: 291
-server accepts handled requests
-  16630948 16630948 31070465
-Reading: 6 Writing: 179 Waiting: 106`
-
 var statusMap = map[int]string{
 	0: "active_connections",
 	1: "accepts",
@@ -39,10 +34,8 @@ func getMetrics(c *conf) []metric {
 func convertMetrics(c *conf, body []byte) []metric {
 	metrics := make([]metric, 0)
 
-	statusPage := []byte(examplePage)
-
 	re := regexp.MustCompile(`\d+`)
-	matches := re.FindAll(statusPage, -1)
+	matches := re.FindAll(body, -1)
 	for i, m := range matches {
 		val, _ := strconv.ParseInt(string(m), 0, 64)
 		metrics = append(metrics, metric{statusMap[i], val})
