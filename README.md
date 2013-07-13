@@ -8,9 +8,19 @@ in nginx, then formats and publishes the resulting data to Librato.
 I didn't need collectd, which librato integrates with. This is easy
 to deploy and just generally makes more sense to me.
 
+## Usage
+
+    nginx-to-librato -c /etc/nginx-to-librato.conf
+
 ## Configuration
 
-TODO
+[settings]
+token: your_librato_token
+user: your_librato_email
+source: load-balancer-001
+url: 127.0.0.1:8000/nginx_status
+flush_interval: 10s
+
 
 ## Upstart Example
 
@@ -30,7 +40,6 @@ location /nginx_status {
 
 This only allows requests from wherever nginx is located. That is
 where you should install nginx-to-librato.
-
 
 ## License
 
