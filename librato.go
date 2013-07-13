@@ -30,7 +30,6 @@ func (m *metricFlusher) publishLoop() {
 		for _, met := range metrics {
 			sink := m.lib.GetGauge(met.name)
 			sink <- met.value
-			log.Println(met.name, met.value)
 		}
 	}
 }
