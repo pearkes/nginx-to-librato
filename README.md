@@ -16,30 +16,34 @@ in nginx, then formats and publishes the resulting data to Librato.
     url: 127.0.0.1:8000/nginx_status
     flush_interval: 10s
 
-
-## Why?
-
-I didn't need collectd, which librato integrates with. This is easy
-to deploy and just generally makes more sense to me.
-
-## Upstart Example
-
-TODO
-
 ## nginx Configuration
 
 This assumes you've configured the HttpStubStatusModule like this:
 
-```
-location /nginx_status {
-  stub_status on;
-  allow 127.0.0.1;
-  deny all;
-}
-```
+    location /nginx_status {
+      stub_status on;
+      allow 127.0.0.1;
+      deny all;
+    }
 
 This only allows requests from wherever nginx is located. That is
-where you should install nginx-to-librato.
+where you should install nginx-to-librato. Alternatively, you
+could put the application on a monitoring server and only allow
+that IP to access the `/nginx_status` page.
+
+## Upstart Example
+
+    description "nginx-to-librato"
+
+    start on runlevel [23]
+
+    env TARGET=/usr/local/bin/nginx-to-librato
+    env LOG=/usr/local/bin/nginx-to-librato
+    env CONF=/etc/nginx-to-librato.conf
+
+    respawn
+
+    exec su -m -l -c "$TARGET -config $CONF >> $LOG"
 
 ## License
 
