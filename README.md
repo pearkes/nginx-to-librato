@@ -47,4 +47,4 @@ that IP to access the `/nginx_status` page.
 
 ## License
 
-Please see [the license file](License.md).
+Please see [the license file](LICENSE.md).
