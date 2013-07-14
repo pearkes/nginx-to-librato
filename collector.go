@@ -85,9 +85,5 @@ func retrieveMetrics(c conf) ([]byte, error) {
 
 	resp.Body.Close()
 
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	return body, nil
 }
