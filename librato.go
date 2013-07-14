@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/rcrowley/go-librato"
 	"log"
 	"time"
@@ -28,7 +29,8 @@ func (m *metricFlusher) publishLoop() {
 		metrics := getMetrics(m.config)
 		log.Println("Flushing to Librato...")
 		for _, met := range metrics {
-			sink := m.lib.GetGauge(met.name)
+			name := fmt.Sprintf("nginx_%s", met.name)
+			sink := m.lib.GetGauge(name)
 			sink <- met.value
 		}
 	}
