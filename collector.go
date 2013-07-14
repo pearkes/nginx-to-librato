@@ -33,7 +33,7 @@ func getMetrics(c conf) []metric {
 	attempts := 0
 	for {
 		if attempts == 500 {
-			log.Println("Failed 500 attempts to check status, goodbye")
+			fmt.Fprintf(os.Stderr, "failed 500 attempts to check status at %s, giving up\n", c.url)
 			os.Exit(1)
 		}
 
@@ -48,7 +48,7 @@ func getMetrics(c conf) []metric {
 		}
 
 		// Wait 1 second in between
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 }
 
