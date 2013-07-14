@@ -19,7 +19,7 @@ func main() {
 	if *debug == false {
 		log.SetOutput(ioutil.Discard)
 	} else {
-		log.Printf("Debugging enabled for nginx-to-librato %s", versionString())
+		log.Printf("Debugging enabled for %s", versionString())
 	}
 
 	// Print the version and exit
