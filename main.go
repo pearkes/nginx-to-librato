@@ -9,9 +9,9 @@ import (
 )
 
 func main() {
-	cpath := flag.String("config", "", "Path to a configuration file")
+	cpath := flag.String("config", "/etc/nginx-to-librato.conf", "Path to a configuration file")
 	debug := flag.Bool("debug", false, "Turn on debugging")
-	version := flag.Bool("version", false, "Prints the version and exits.")
+	version := flag.Bool("version", false, "Prints the version and exits")
 
 	flag.Parse()
 
