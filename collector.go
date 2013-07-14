@@ -5,8 +5,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 var statusMap = map[int]string{
@@ -28,8 +30,26 @@ type metric struct {
 // retrieves the status page, converts the metrics
 // and returns an array of type metric
 func getMetrics(c conf) []metric {
-	body := retrieveMetrics(c)
-	return convertMetrics(body)
+	attempts := 0
+	for {
+		if attempts == 500 {
+			log.Println("Failed 500 attempts to check status, goodbye")
+			os.Exit(1)
+		}
+
+		attempts += 1
+
+		body, err := retrieveMetrics(c)
+
+		if err != nil {
+			log.Printf("Encountered error while requesting stats: %s. Sleeping and trying again (attempt %v/500)", err.Error(), attempts)
+		} else {
+			return convertMetrics(body)
+		}
+
+		// Wait 1 second in between
+		time.Sleep(2 * time.Second)
+	}
 }
 
 // convertMetrics converts a byte array representing the nginx
@@ -48,16 +68,26 @@ func convertMetrics(body []byte) []metric {
 }
 
 // Retrieves the status page via http
-func retrieveMetrics(c conf) []byte {
+func retrieveMetrics(c conf) ([]byte, error) {
 	url := fmt.Sprintf("http://%s", c.url)
 
 	resp, err := http.Get(url)
+
+	if err != nil {
+		return nil, err
+	}
+
 	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
 	resp.Body.Close()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return body
+	return body, nil
 }
