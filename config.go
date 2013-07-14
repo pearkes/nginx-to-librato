@@ -17,8 +17,8 @@ type conf struct {
 	rawFlushInterval string        // The raw interval specified by the user
 }
 
-func NewConf(path string) *conf {
-	con := &conf{}
+func NewConf(path string) (conf, []error) {
+	con := conf{}
 
 	// We may have multiple errors here
 	errs := make([]error, 0)
@@ -36,7 +36,7 @@ func NewConf(path string) *conf {
 	}
 	con.libToken = token
 
-	con.libUser, err = c.String("settings", "user")
+	con.libUser, err = c.String("settings", "email")
 	if err != nil {
 		errs = append(errs, fmt.Errorf("Failed parsing user: %s", err))
 	}
@@ -61,16 +61,12 @@ func NewConf(path string) *conf {
 		errs = append(errs, fmt.Errorf("Failed parsing flush_interval: %s", err))
 	}
 
-	// Print the errors and exit if there are any
-	if len(errs) > 0 {
-		fmt.Fprintf(os.Stderr, "Configuration errors:\n")
-		for _, e := range errs {
-			fmt.Fprintf(os.Stderr, "* %s\n", e.Error())
-		}
-		os.Exit(1)
-	}
-
 	log.Printf("Loaded configuration: %v", con)
 
-	return con
+	// Set errs to nil if there are none
+	if len(errs) == 0 {
+		errs = nil
+	}
+
+	return con, errs
 }

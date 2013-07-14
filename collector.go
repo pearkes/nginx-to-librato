@@ -25,13 +25,16 @@ type metric struct {
 	value int64
 }
 
-func getMetrics(c *conf) []metric {
+// retrieves the status page, converts the metrics
+// and returns an array of type metric
+func getMetrics(c conf) []metric {
 	body := retrieveMetrics(c)
-	return convertMetrics(c, body)
+	return convertMetrics(body)
 }
 
-// Retrieves the metrics and converts them into []metrics
-func convertMetrics(c *conf, body []byte) []metric {
+// convertMetrics converts a byte array representing the nginx
+// status page into an array of type metric, suitable for our use.
+func convertMetrics(body []byte) []metric {
 	metrics := make([]metric, 0)
 
 	re := regexp.MustCompile(`\d+`)
@@ -45,7 +48,7 @@ func convertMetrics(c *conf, body []byte) []metric {
 }
 
 // Retrieves the status page via http
-func retrieveMetrics(c *conf) []byte {
+func retrieveMetrics(c conf) []byte {
 	url := fmt.Sprintf("http://%s", c.url)
 
 	resp, err := http.Get(url)

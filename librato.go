@@ -9,10 +9,10 @@ import (
 type metricFlusher struct {
 	lib      librato.Metrics // The instance of librato we want
 	interval time.Duration
-	config   *conf
+	config   conf
 }
 
-func NewMetricFlusher(c *conf) *metricFlusher {
+func NewMetricFlusher(c conf) *metricFlusher {
 	met := &metricFlusher{
 		librato.NewSimpleMetrics(c.libUser, c.libToken, c.libSource),
 		c.flushInterval,
