@@ -5,7 +5,7 @@ in nginx, then formats and publishes the resulting data to Librato.
 
 ## Usage
 
-    nginx-to-librato -c /etc/nginx-to-librato.conf
+    nginx-to-librato [-debug] -config /etc/nginx-to-librato.conf
 
 ## Configuration
 
