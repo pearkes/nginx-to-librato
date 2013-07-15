@@ -43,7 +43,7 @@ that IP to access the `/nginx_status` page.
 
     respawn
 
-    exec su -m -l -c "$TARGET -debug -config $CONF >> $LOG"
+    exec su -m -l -c "$TARGET -debug -config $CONF &> $LOG"
 
 ## License
 
